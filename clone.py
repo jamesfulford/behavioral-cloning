@@ -17,3 +17,22 @@ y_train = np.array(list(map(
     lambda l: float(l[3]),
     lines
 )))
+
+from keras.models import Sequential
+from keras.layers import Flatten, Dense
+
+input_shape = (160, 320, 3)
+
+model = Sequential()
+model.add(Flatten(input_shape=input_shape))
+model.add(Dense(1))
+
+model.compile(loss="mse", optimizer="adam")
+model.fit(
+    X_train,
+    y_train,
+    validation_split=0.2,
+    shuffle=True,
+    nb_epoch=10,
+)
+model.save("model.h5")
