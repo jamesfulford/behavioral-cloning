@@ -8,7 +8,7 @@ import sklearn
 from sklearn.model_selection import train_test_split
 
 from keras.models import Sequential
-from keras.layers import Cropping2D, Flatten, Dense, Lambda, Convolution2D
+from keras.layers import Cropping2D, Flatten, Dense, Dropout, Lambda, Convolution2D
 from keras.layers.pooling import MaxPooling2D
 
 #
@@ -73,17 +73,22 @@ model = Sequential()
 model.add(Cropping2D(cropping=((50, 20), (0, 0)), input_shape=input_shape))
 model.add(Lambda(lambda i: (i - 128) / 256.))
 
-model.add(Convolution2D(10, 5, 5, activation="relu"))
+model.add(Convolution2D(12, (5, 5), activation="relu"))
 model.add(MaxPooling2D())
+model.add(Dropout(0.1))
 
-model.add(Convolution2D(6, 5, 5, activation="relu"))
+model.add(Convolution2D(6, (5, 5), activation="relu"))
 model.add(MaxPooling2D())
+model.add(Dropout(0.1))
 
 model.add(Flatten())
 
 model.add(Dense(400))
+model.add(Dropout(0.5))
 model.add(Dense(100))
+model.add(Dropout(0.5))
 model.add(Dense(25))
+model.add(Dropout(0.5))
 model.add(Dense(1))
 
 
@@ -107,6 +112,6 @@ model.fit_generator(
         correction=correction
     ),
     validation_steps=ceil(len(validation_samples) / batch_size),
-    epochs=3,
+    epochs=10,
 )
 model.save("model.h5")
