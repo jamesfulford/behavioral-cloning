@@ -122,29 +122,80 @@ track without leaving the road.
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes:
+The final model architecture consisted of a convolution neural network with the
+following layers and layer sizes (using model.summary())
 
+Input size: 160x320x3
 
-Convolution2D(24, (5, 5), strides=(2, 2), activation="relu")
-Dropout(0.1)
-Convolution2D(36, (5, 5), strides=(2, 2), activation="relu")
-Dropout(0.1)
-Convolution2D(48, (5, 5), strides=(2, 2), activation="relu")
-Dropout(0.1)
-Convolution2D(64, (3, 3), activation="relu")
-Dropout(0.1)
-Convolution2D(64, (3, 3), activation="relu")
-Dropout(0.1)
-
-Flatten()
-
-Dense(100)
-Dropout(0.5)
-Dense(50)
-Dropout(0.5)
-Dense(10)
-Dropout(0.5)
-Dense(1))  # output laye
+```
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #
+=================================================================
+Image cropping layer
+cropping2d_1 (Cropping2D)    (None, 65, 320, 3)        0
+_________________________________________________________________
+Normalization layer
+lambda_1 (Lambda)            (None, 65, 320, 3)        0
+_________________________________________________________________
+Convolutional layer with 24 filters, 5x5 kernel, using 2x2 strides. RELU activation.
+conv2d_1 (Conv2D)            (None, 31, 158, 24)       1824
+_________________________________________________________________
+Dropout layer (10% of connections dropped)
+dropout_1 (Dropout)          (None, 31, 158, 24)       0
+_________________________________________________________________
+Convolutional layer with 36 filters, 5x5 kernel, using 2x2 strides. RELU activation.
+conv2d_2 (Conv2D)            (None, 14, 77, 36)        21636
+_________________________________________________________________
+Dropout layer (10% of connections dropped)
+dropout_2 (Dropout)          (None, 14, 77, 36)        0
+_________________________________________________________________
+Convolutional layer with 48 filters, 5x5 kernel, using 2x2 strides. RELU activation.
+conv2d_3 (Conv2D)            (None, 5, 37, 48)         43248
+_________________________________________________________________
+Dropout layer (10% of connections dropped)
+dropout_3 (Dropout)          (None, 5, 37, 48)         0
+_________________________________________________________________
+Convolutional layer with 64 filters, 3x3 kernel. RELU activation.
+conv2d_4 (Conv2D)            (None, 3, 35, 64)         27712
+_________________________________________________________________
+Dropout layer (10% of connections dropped)
+dropout_4 (Dropout)          (None, 3, 35, 64)         0
+_________________________________________________________________
+Convolutional layer with 64 filters, 3x3 kernel. RELU activation.
+conv2d_5 (Conv2D)            (None, 1, 33, 64)         36928
+_________________________________________________________________
+Dropout layer (10% of connections dropped)
+dropout_5 (Dropout)          (None, 1, 33, 64)         0
+_________________________________________________________________
+Convolutional nodes flattened.
+flatten_1 (Flatten)          (None, 2112)              0
+_________________________________________________________________
+Fully connected layer, 100 nodes
+dense_1 (Dense)              (None, 100)               211300
+_________________________________________________________________
+Dropout layer (50% of connections dropped)
+dropout_6 (Dropout)          (None, 100)               0
+_________________________________________________________________
+Fully connected layer, 50 nodes
+dense_2 (Dense)              (None, 50)                5050
+_________________________________________________________________
+Dropout layer (50% of connections dropped)
+dropout_7 (Dropout)          (None, 50)                0
+_________________________________________________________________
+Fully connected layer, 10 nodes
+dense_3 (Dense)              (None, 10)                510
+_________________________________________________________________
+Dropout layer (50% of connections dropped)
+dropout_8 (Dropout)          (None, 10)                0
+_________________________________________________________________
+Fully connected layer, 1 nodes
+dense_4 (Dense)              (None, 1)                 11
+=================================================================
+Total params: 348,219
+Trainable params: 348,219
+Non-trainable params: 0
+_________________________________________________________________
+```
 
 #### 3. Creation of the Training Set & Training Process
 
