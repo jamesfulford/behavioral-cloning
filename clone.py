@@ -70,24 +70,27 @@ def data_generator(samples, batch_size=128, correction=.2):
 input_shape = (160, 320, 3)
 
 model = Sequential()
-model.add(Cropping2D(cropping=((50, 20), (0, 0)), input_shape=input_shape))
+model.add(Cropping2D(cropping=((70, 25), (0, 0)), input_shape=input_shape))
 model.add(Lambda(lambda i: (i - 128) / 256.))
 
-model.add(Convolution2D(12, (5, 5), activation="relu"))
-model.add(MaxPooling2D())
+model.add(Convolution2D(24, (5, 5), strides=(2, 2), activation="relu"))
 model.add(Dropout(0.1))
-
-model.add(Convolution2D(6, (5, 5), activation="relu"))
-model.add(MaxPooling2D())
+model.add(Convolution2D(36, (5, 5), strides=(2, 2), activation="relu"))
+model.add(Dropout(0.1))
+model.add(Convolution2D(48, (5, 5), strides=(2, 2), activation="relu"))
+model.add(Dropout(0.1))
+model.add(Convolution2D(64, (3, 3), activation="relu"))
+model.add(Dropout(0.1))
+model.add(Convolution2D(64, (3, 3), activation="relu"))
 model.add(Dropout(0.1))
 
 model.add(Flatten())
 
-model.add(Dense(400))
-model.add(Dropout(0.5))
 model.add(Dense(100))
 model.add(Dropout(0.5))
-model.add(Dense(25))
+model.add(Dense(50))
+model.add(Dropout(0.5))
+model.add(Dense(10))
 model.add(Dropout(0.5))
 model.add(Dense(1))
 
@@ -97,7 +100,7 @@ model.add(Dense(1))
 #
 model.compile(loss="mse", optimizer="adam")
 
-batch_size = 32
+batch_size = 48
 correction = .2
 model.fit_generator(
     data_generator(
